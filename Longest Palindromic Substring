@@ -1,0 +1,40 @@
+class Solution {
+public:
+	bool Palindrome( const std::string & str,int begin , int end)
+	{
+		int left = begin;
+		int right = end - 1;
+		while (left<right)
+		{
+			if (str[left++] != str[right--])
+				return false;
+		}
+		return true;
+	}
+		string longestPalindrome(string s) 
+		{
+			int ret = 1;
+			int size = s.size();
+			int start = 0;
+			for (int i = 0; i < size-1; ++i)
+			{
+				for (int j = size-1; j>i; j--)
+				{
+					if (s[i] == s[j])
+					{
+						if (Palindrome(s, i, j+1))
+						{
+							int temp = j + 1 - i;
+							if (temp>ret)
+							{
+								ret = temp;
+								start = i;
+							}
+							break;
+						}
+					}
+				}
+			}
+			return s.substr(start, ret);
+		}
+};
