@@ -1,0 +1,55 @@
+    /*  int _coin(vector<int> &changes , size_t index ,int aim)
+    {
+        int ret=0;
+        if(index==changes.size())
+        {
+            return (aim==0)?1:0;
+        }
+        else
+        {
+            for(int i=0;i*changes[index]<=aim;++i)
+            {
+                ret+=_coin(changes,index+1,aim-i*changes[index]);
+            }
+        }
+        return ret;
+    }*/
+    int _coin(vector<int>&coins,size_t index , int aim)
+    {
+        vector<vector<int>> dp;
+        dp.resize(coins.size());
+        for(auto&i:dp)
+        {
+            i.resize(aim+1);
+        }
+        for(int i =0; i<coins.size();++i)
+        {
+            dp[i][0]=1;
+        }
+        for(int j=0;j<aim+1;++j)
+        {
+            if(j%coins[0]==0)
+                dp[0][j]=1;
+        }
+        int Rows=coins.size();
+        int Cols=aim+1;
+        for(int i=1;i<Rows;++i)
+        {
+            for(int j=1;j<Cols;++j)
+            {
+                  for(int k=0;coins[i]*k<=j;++k)
+                {
+                    dp[i][j]+=dp[i-1][j-coins[i]*k];
+                }
+            }
+        }
+        return dp[Rows-1][aim];
+    }
+    int change(int amount, vector<int>& coins) {
+         if(amount==0)
+             return 1;
+         if(coins.size()==0)
+             return 0;
+        else
+            return _coin(coins,0,amount);
+    }
